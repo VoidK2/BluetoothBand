@@ -1,8 +1,7 @@
 ## 蓝牙手环防丢失 防遗失
 运行截图
 
-![](pic/c.png)
-![](pic/s.png)
+![](pic/c.png) ![](pic/s.png)
 
 定义
 > bandapp 为client端
