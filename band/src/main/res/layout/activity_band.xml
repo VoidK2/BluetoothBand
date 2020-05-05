@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tvName"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+    <TextView
+        android:id="@+id/tvAddress"
+        android:gravity="center_horizontal|top"
+        android:textSize="12sp"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#008577">
+
+        <Button
+            android:id="@+id/send_alert"
+            android:layout_width="253dp"
+            android:layout_height="93dp"
+            android:background="#FF5252"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/send_alert"
+            android:textColor="#00574B"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.263" />
+    </android.support.constraint.ConstraintLayout>
+
+    <!--    <Button-->
+<!--        android:id="@+id/send_alert"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="672dp"-->
+<!--        android:background="#008577"-->
+<!--        android:fontFamily="sans-serif-condensed-medium"-->
+<!--        android:text="@string/send_alert"-->
+<!--        android:textColor="#FF5252"-->
+<!--        android:textSize="36sp" />-->
+
+</LinearLayout>

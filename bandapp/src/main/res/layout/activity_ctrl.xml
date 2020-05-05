@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tvName"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+    <TextView
+        android:id="@+id/tvAddress"
+        android:gravity="center_horizontal|top"
+        android:textSize="12sp"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content" />
+    <!-- 页面上布局 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:fontFamily="sans-serif-black"
+            android:text="使用说明"
+            android:textAlignment="center"
+            android:textColor="#00574B"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="点击寻找手环即可使手环震动闪光和响铃"
+            android:textColor="#00574B"
+            android:fontFamily="sans-serif-black"/>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="在文本框内输入如下指令，并点击文本，可触发响应事件"
+            android:textColor="#00574B" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="输入 vibrate 可使手环震动"
+            android:textColor="#00574B"
+            android:fontFamily="sans-serif-black"/>
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="输入 flash 可使手环闪光"
+            android:textColor="#00574B"
+            android:fontFamily="sans-serif-black"/>
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="输入 ring 可使手环响铃"
+            android:textColor="#00574B"
+            android:fontFamily="sans-serif-black"/>
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="输入 alert 可触发上述全部事件"
+            android:textColor="#00574B"
+            android:fontFamily="sans-serif-black"/>
+    </LinearLayout>
+
+    <!-- 页面下布局 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp">
+
+        <EditText
+            android:id="@+id/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:hint="@string/edit_text"
+            android:textColorHint="#008577"
+            android:textSize="16sp" />
+
+        <!-- 页面下布局内部按钮布局 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:orientation="horizontal"
+                >
+                <Button
+                    android:id="@+id/send_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:textColor="#00574B"
+                    android:text="@string/send_text"
+                    android:textSize="@dimen/button_text_size"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#00574B"
+                android:text="-----测试自己-----" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:orientation="horizontal"
+                >
+
+                <Button
+                    android:id="@+id/vibrator_test"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:textColor="#00574B"
+                    android:text="@string/vibrator"
+                    android:textSize="@dimen/button_text_size"
+                    />
+                <Button
+                    android:id="@+id/flash_test"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:textColor="#00574B"
+                    android:text="@string/flash"
+                    android:textSize="@dimen/button_text_size"
+                    />
+                <Button
+                    android:id="@+id/ring_test"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:textColor="#00574B"
+                    android:text="@string/ring"
+                    android:textSize="@dimen/button_text_size"
+                    />
+
+                <Button
+                    android:id="@+id/all_test"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="#00574B"
+                    android:text="@string/all"
+                    android:textSize="@dimen/button_text_size"
+                    />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#00574B"
+                android:text="-----测试手环-----" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:orientation="horizontal"
+                >
+                <Button
+                    android:id="@+id/vibrator_otherside"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:textColor="#00574B"
+                    android:text="@string/vibrator"
+                    android:textSize="@dimen/button_text_size"
+                    />
+                <Button
+                    android:id="@+id/flash_otherside"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:textColor="#00574B"
+                    android:text="@string/flash"
+                    android:textSize="@dimen/button_text_size"
+                    />
+                <Button
+                    android:id="@+id/ring_otherside"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:textColor="#00574B"
+                    android:text="@string/ring"
+                    android:textSize="@dimen/button_text_size"
+                    />
+
+                <Button
+                    android:id="@+id/all_otherside"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="#00574B"
+                    android:text="寻找手环"
+                    android:textSize="@dimen/button_text_size"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
