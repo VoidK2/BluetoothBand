@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -47,6 +48,8 @@ public class DebugActivity extends Activity {
     private String uuid;
     private volatile static boolean exit = false;
     private Handler handler;
+    private Short BLErssi;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,21 +68,23 @@ public class DebugActivity extends Activity {
         intentFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
         registerReceiver(bluetoothReceiver, intentFilter);
     }
-    private void bindView(){
+
+    private void bindView() {
         tvName = findViewById(R.id.tvName);
         tvAddress = findViewById(R.id.tvAddress);
-        sendTextBtn=findViewById(R.id.send_text);
-        vibrateBtn=findViewById(R.id.vibrator_test);
-        flashBtn=findViewById(R.id.flash_test);
-        ringBtn=findViewById(R.id.ring_test);
-        allBtn=findViewById(R.id.all_test);
-        vibrateBtn2=findViewById(R.id.vibrator_otherside);
-        flashBtn2=findViewById(R.id.flash_otherside);
-        ringBtn2=findViewById(R.id.ring_otherside);
-        allBtn2=findViewById(R.id.all_otherside);
-        etInput=findViewById(R.id.edit_text);
+        sendTextBtn = findViewById(R.id.send_text);
+        vibrateBtn = findViewById(R.id.vibrator_test);
+        flashBtn = findViewById(R.id.flash_test);
+        ringBtn = findViewById(R.id.ring_test);
+        allBtn = findViewById(R.id.all_test);
+        vibrateBtn2 = findViewById(R.id.vibrator_otherside);
+        flashBtn2 = findViewById(R.id.flash_otherside);
+        ringBtn2 = findViewById(R.id.ring_otherside);
+        allBtn2 = findViewById(R.id.all_otherside);
+        etInput = findViewById(R.id.edit_text);
     }
-    private void setListener(){
+
+    private void setListener() {
         sendTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,6 +156,7 @@ public class DebugActivity extends Activity {
             }
         });
     }
+
     private void initPreData() {
         device = getIntent().getParcelableExtra("device");
         uuid = getIntent().getStringExtra("uuid");
@@ -164,8 +170,9 @@ public class DebugActivity extends Activity {
             finish();
         }
     }
+
     @SuppressLint("HandlerLeak")
-    public void ExecuteBleMsg(){
+    public void ExecuteBleMsg() {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -190,15 +197,15 @@ public class DebugActivity extends Activity {
                         /*接收信息*/
                         Log.i(TAG, "read success");
                         String text = (String) msg.obj;
-                        if(text.equals("flash")){
+                        if (text.equals("flash")) {
                             flashOnSelf();
-                        }else if(text.equals("ring")){
+                        } else if (text.equals("ring")) {
                             ringOnSelf();
-                        }else if(text.equals("vibrate")){
+                        } else if (text.equals("vibrate")) {
                             vibrationOnSelf();
-                        }else if(text.equals("alert")){
+                        } else if (text.equals("alert")) {
                             allOnSelf();
-                        }else{
+                        } else {
                             Toast.makeText(DebugActivity.this, text, Toast.LENGTH_SHORT).show();
                         }
                         break;
@@ -237,10 +244,18 @@ public class DebugActivity extends Activity {
                     allOnSelf();
                     exitChatDialog("当前连接已断开，请重新连接", false);
                 }
+            } else if (intent.getAction().equals(BluetoothDevice.ACTION_FOUND)) {
+                BluetoothDevice device2 = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                short rssi = intent.getExtras().getShort(BluetoothDevice.EXTRA_RSSI);
+                String address = device2.getAddress();
+                if (address == device.getAddress()) {
+                    BLErssi = rssi;
+                }
             }
         }
     };
-    private void sendTextToRemoteDevice(String text){
+
+    private void sendTextToRemoteDevice(String text) {
         if (text.length() > 0) {
             if (isClient) {
                 Log.d(TAG, text);
@@ -251,23 +266,27 @@ public class DebugActivity extends Activity {
             }
         }
     }
+
     //    震动铃声闪光等函数
-    private void vibrationOnSelf(){
+    private void vibrationOnSelf() {
         Toast.makeText(DebugActivity.this, "本机震动！", Toast.LENGTH_SHORT).show();
         Thread thread = new vibrateThread(this);
         thread.start();
     }
+
     private void flashOnSelf() {
         Toast.makeText(DebugActivity.this, "本机闪光灯SOS开启！", Toast.LENGTH_SHORT).show();
         Thread thread = new flashSOSThread(this);
         thread.start();
     }
-    private void ringOnSelf(){
+
+    private void ringOnSelf() {
         Toast.makeText(DebugActivity.this, "本机响铃！", Toast.LENGTH_SHORT).show();
         Thread thread = new ringThread(this);
         thread.start();
     }
-    private void allOnSelf(){
+
+    private void allOnSelf() {
         Toast.makeText(DebugActivity.this, "本机声光提示！", Toast.LENGTH_SHORT).show();
         Thread thread = new vibrateThread(this);
         Thread thread2 = new flashSOSThread(this);
@@ -276,19 +295,23 @@ public class DebugActivity extends Activity {
         thread2.start();
         thread3.start();
     }
-    private void vibrationOnOtherSide(){
+
+    private void vibrationOnOtherSide() {
         Toast.makeText(DebugActivity.this, "手环震动！", Toast.LENGTH_SHORT).show();
         sendTextToRemoteDevice("vibrate");
     }
-    private void flashOnOtherSide(){
+
+    private void flashOnOtherSide() {
         Toast.makeText(DebugActivity.this, "手环闪光！", Toast.LENGTH_SHORT).show();
         sendTextToRemoteDevice("flash");
     }
-    private void ringOnOtherSide(){
+
+    private void ringOnOtherSide() {
         Toast.makeText(DebugActivity.this, "手环响铃！", Toast.LENGTH_SHORT).show();
         sendTextToRemoteDevice("ring");
     }
-    private void allOnOtherSide(){
+
+    private void allOnOtherSide() {
         Toast.makeText(DebugActivity.this, "手环提示！", Toast.LENGTH_SHORT).show();
         sendTextToRemoteDevice("alert");
     }
@@ -301,6 +324,7 @@ public class DebugActivity extends Activity {
             clientService.cancel();
         }
     }
+
     public void exitChatDialog(String text, boolean cancelable) {
         if (exit) {
             return;
@@ -323,6 +347,7 @@ public class DebugActivity extends Activity {
             clientService.cancel();
         }
     }
+
     @Override
     public void onBackPressed() {
         exitChatDialog("退出当前连接？", false);
