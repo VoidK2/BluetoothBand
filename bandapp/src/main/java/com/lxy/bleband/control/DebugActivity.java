@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,6 +40,8 @@ public class DebugActivity extends Activity {
     private Button flashBtn2;
     private Button ringBtn2;
     private Button allBtn2;
+    private Button findrssiBtn;
+    private Button antilostBtn;
     private TextView tvName, tvAddress;
     private EditText etInput;
     private boolean isClient;
@@ -48,7 +51,9 @@ public class DebugActivity extends Activity {
     private String uuid;
     private volatile static boolean exit = false;
     private Handler handler;
-    private Short BLErssi;
+    private Short rssiAlertRange=0;
+    private Short rssiNow=0;
+    private BluetoothAdapter mBluetoothAdapter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,7 @@ public class DebugActivity extends Activity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         intentFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
+        intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
         registerReceiver(bluetoothReceiver, intentFilter);
     }
 
@@ -82,6 +88,8 @@ public class DebugActivity extends Activity {
         ringBtn2 = findViewById(R.id.ring_otherside);
         allBtn2 = findViewById(R.id.all_otherside);
         etInput = findViewById(R.id.edit_text);
+        findrssiBtn=findViewById(R.id.find_rssi);
+        antilostBtn=findViewById(R.id.start_antilost);
     }
 
     private void setListener() {
@@ -155,6 +163,38 @@ public class DebugActivity extends Activity {
                 allOnOtherSide();
             }
         });
+        findrssiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBluetoothAdapter2.startDiscovery();
+            }
+        });
+        allBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //todo 添加内容
+                        mBluetoothAdapter2.cancelDiscovery();
+                        mBluetoothAdapter2.startDiscovery();
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        if(rssiNow<rssiAlertRange){
+                            allOnSelf();
+                        }
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
     }
 
     private void initPreData() {
@@ -169,6 +209,9 @@ public class DebugActivity extends Activity {
             Toast.makeText(this, "对方已经退出连接!", Toast.LENGTH_LONG).show();
             finish();
         }
+        mBluetoothAdapter2 = BluetoothAdapter.getDefaultAdapter();
+        BluetoothManager manager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothAdapter2 = manager.getAdapter();
     }
 
     @SuppressLint("HandlerLeak")
@@ -181,7 +224,6 @@ public class DebugActivity extends Activity {
                         /*发送信息*/
                         Log.i(TAG, "write success");
                         String selfText = (String) msg.obj;
-                        //todo 执行函数
                         Toast.makeText(DebugActivity.this, selfText, Toast.LENGTH_SHORT).show();
                         break;
                     case DebugService.WRITE_DATA_FAIL:
@@ -248,8 +290,15 @@ public class DebugActivity extends Activity {
                 BluetoothDevice device2 = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 short rssi = intent.getExtras().getShort(BluetoothDevice.EXTRA_RSSI);
                 String address = device2.getAddress();
-                if (address == device.getAddress()) {
-                    BLErssi = rssi;
+                Log.i(TAG, address);
+                if (address.equals(device.getAddress())) {
+                    if(rssiAlertRange==0){
+                        rssiAlertRange = rssi;
+                    }else{
+                        rssiNow=rssi;
+                    }
+//                    第一次赋值给rssiAlertRange，之后赋给rssiNow
+                    Log.i(TAG, String.valueOf(rssiAlertRange));
                 }
             }
         }
