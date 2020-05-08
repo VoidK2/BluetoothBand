@@ -131,7 +131,6 @@ public class DeviceActivity extends Activity {
             switch (msg.what) {
                 case ClientService.CONNECTED_SUCCESS:
                     Log.i(TAG, "connected success");
-                    //todo 跳转部分
                     Intent intent = new Intent(DeviceActivity.this, DebugActivity.class);
 //                    Intent intent = new Intent(DeviceActivity.this, ChatActivity.class);
                     intent.putExtra("device", mDevice);

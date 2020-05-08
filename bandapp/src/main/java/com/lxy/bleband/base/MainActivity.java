@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnSearch;
     private TextView tvDevice;
     private List<BluetoothDevice> list;
+    private List<Short> listrssi;
     private Set<String> set = new HashSet<>();
     private BleAdapter bleAdapter;
     private BluetoothAdapter mBluetoothAdapter;
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(bluetoothReceiver, filter);
     }
-//    检测是否支持ble
+//    检测是否支持蓝牙
     private void isSupportBle() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         BluetoothManager manager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
@@ -141,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
 //    初始化蓝牙列表
     private void initData() {
         list = new ArrayList<>();
-        bleAdapter = new BleAdapter(this, list);
+        listrssi = new ArrayList<>();
+        bleAdapter = new BleAdapter(this, list,listrssi);
     }
 //    绑定按钮
     private void bindView() {
@@ -189,7 +191,9 @@ public class MainActivity extends AppCompatActivity {
             String action = intent.getAction();
             if (action.equals(BluetoothDevice.ACTION_FOUND)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                short rssi = intent.getExtras().getShort(BluetoothDevice.EXTRA_RSSI);
                 list.add(device);
+                listrssi.add(rssi);
                 Log.e(TAG, "discovery:" + device.getName());
                 bleAdapter.notifyDataSetChanged();
             } else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {

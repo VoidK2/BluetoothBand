@@ -15,10 +15,12 @@ import java.util.List;
 public class BleAdapter extends BaseAdapter {
     private Context context;
     private List<BluetoothDevice> list;
+    private List<Short> listrssi;
 
-    public BleAdapter(Context context, List<BluetoothDevice> list) {
+    public BleAdapter(Context context, List<BluetoothDevice> list,List<Short> listrssi) {
         this.context = context;
         this.list = list;
+        this.listrssi=listrssi;
     }
 
     @Override
@@ -48,10 +50,11 @@ public class BleAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
         BluetoothDevice device = list.get(position);
+        Short rssi=listrssi.get(position);
         if (device.getName() == null) {
-            holder.tvName.setText(device.getAddress());
+            holder.tvName.setText(rssi+"db "+device.getAddress());
         } else {
-            holder.tvName.setText(device.getName() + ":" + device.getAddress());
+            holder.tvName.setText(rssi+"db "+device.getName() + ":" + device.getAddress());
         }
         return convertView;
     }

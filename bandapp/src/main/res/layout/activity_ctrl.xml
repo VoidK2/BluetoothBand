@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
@@ -87,6 +85,14 @@
             android:text="输入 alert 可触发上述全部事件"
             android:textColor="#00574B"
             android:fontFamily="sans-serif-black"/>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="校准丢失警报距离后，点击超距离警报按钮，开启距离检测功能"
+            android:textColor="#00574B" />
     </LinearLayout>
 
     <!-- 页面下布局 -->
@@ -135,6 +141,26 @@
                     android:layout_weight="1"
                     android:textColor="#00574B"
                     android:text="@string/send_text"
+                    android:textSize="@dimen/button_text_size"
+                    />
+                <Button
+                    android:id="@+id/find_rssi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:textColor="#00574B"
+                    android:text="校准距离"
+                    android:textSize="@dimen/button_text_size"
+                    />
+                <Button
+                    android:id="@+id/start_antilost"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:textColor="#00574B"
+                    android:text="超距离警报"
                     android:textSize="@dimen/button_text_size"
                     />
 
